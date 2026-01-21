@@ -14,7 +14,7 @@ redisClient.on('error', (err) => {
 });
 
 redisClient.on('connect', () => {
-  console.log('✅ Redis conectado correctamente');
+  console.log('Redis conectado correctamente');
 });
 
 // Conectar al iniciar
