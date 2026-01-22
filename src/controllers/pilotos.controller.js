@@ -45,7 +45,7 @@ export const pilotosController = {
 
   async create(req, res, next) {
     try {
-      const piloto = await service.create(req.validatedData);
+      const piloto = await service.create(req.body);
       successResponse(res, piloto, 'Piloto creado exitosamente', 201);
     } catch (error) {
       next(error);
@@ -55,7 +55,7 @@ export const pilotosController = {
   async update(req, res, next) {
     try {
       const { id } = req.params;
-      const piloto = await service.update(id, req.validatedData);
+      const piloto = await service.update(id, req.body);
       successResponse(res, piloto, 'Piloto actualizado exitosamente');
     } catch (error) {
       next(error);

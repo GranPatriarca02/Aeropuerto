@@ -6,7 +6,6 @@ export const validateSchema = (validationFn) => {
       const isUpdate = req.method === 'PUT' || req.method === 'PATCH';
       const result = validationFn(req.body, isUpdate);
       
-      // Manejamos si el resultado es un string (error único) o un array de errores
       let errors = [];
       if (typeof result === 'string') {
         errors = [{ message: result }];
@@ -17,6 +16,9 @@ export const validateSchema = (validationFn) => {
       if (errors.length > 0) {
         throw new ValidationError('Errores de validación', errors);
       }
+      
+     
+      req.validatedData = req.body; 
       
       next();
     } catch (err) {
