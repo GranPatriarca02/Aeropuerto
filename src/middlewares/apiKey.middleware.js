@@ -9,15 +9,17 @@ export const apiKeyMiddleware = (req, res, next) => {
       throw new UnauthorizedError('API Key requerida');
     }
     
-    const validKeys = [...config.apiKeys, ...config.adminApiKeys];
+    // Si config es undefined o no tiene las propiedades, esto fallará.
+    // Asegúrate de que config.apiKeys y config.adminApiKeys sean ARRAYS.
+    const userKeys = config.apiKeys || [];
+    const adminKeys = config.adminApiKeys || [];
+    const validKeys = [...userKeys, ...adminKeys];
     
     if (!validKeys.includes(apiKey)) {
       throw new UnauthorizedError('API Key inválida');
     }
     
-    // Guardar si es admin 
-    req.isAdmin = config.adminApiKeys.includes(apiKey);
-    
+    req.isAdmin = adminKeys.includes(apiKey);
     next();
   } catch (error) {
     next(error);

@@ -1,38 +1,35 @@
 import { Router } from 'express';
-import { aeropuertosController } from '../controllers/aeropuertos.controller.js';
+import { aerolineasController } from '../controllers/aerolineas.controller.js';
 import { apiKeyMiddleware } from '../middlewares/apiKey.middleware.js';
 import { adminMiddleware } from '../middlewares/admin.middleware.js';
 import { validateSchema } from '../middlewares/validation.middleware.js';
-import { createAeropuertoSchema, updateAeropuertoSchema } from '../validations/aeropuerto.validation.js';
+import { validateCreateAerolinea } from '../validations/aerolinea.validation.js';
 
 const router = Router();
 
-// Todas las rutas requieren API Key
 router.use(apiKeyMiddleware);
 
-// Rutas públicas (con API Key)
-router.get('/', aeropuertosController.getAll);
-router.get('/:id', aeropuertosController.getById);
+router.get('/', aerolineasController.getAll);
+router.get('/:id', aerolineasController.getById);
 
-// Rutas admin
 router.post(
   '/',
   adminMiddleware,
-  validateSchema(createAeropuertoSchema),
-  aeropuertosController.create
+  validateSchema(validateCreateAerolinea), // Usamos la misma función
+  aerolineasController.create
 );
 
 router.put(
   '/:id',
   adminMiddleware,
-  validateSchema(updateAeropuertoSchema),
-  aeropuertosController.update
+  validateSchema(validateCreateAerolinea), // El middleware ahora es compatible
+  aerolineasController.update
 );
 
 router.delete(
   '/:id',
   adminMiddleware,
-  aeropuertosController.delete
+  aerolineasController.delete
 );
 
 export default router;

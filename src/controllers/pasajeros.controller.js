@@ -1,35 +1,54 @@
-import { Router } from 'express';
-import { pasajerosController } from '../controllers/pasajeros.controller.js';
-import { apiKeyMiddleware } from '../middlewares/apiKey.middleware.js';
-import { adminMiddleware } from '../middlewares/admin.middleware.js';
-import { validateSchema } from '../middlewares/validation.middleware.js';
-import { createPasajeroSchema, updatePasajeroSchema } from '../validations/pasajero.validation.js';
+import { PasajerosService } from '../services/pasajeros.service.js';
+import { successResponse } from '../utils/response.js';
 
-const router = Router();
+const service = new PasajerosService();
 
-router.use(apiKeyMiddleware);
+export const pasajerosController = {
+  async getAll(req, res, next) {
+    try {
+      const pasajeros = await service.getAll();
+      successResponse(res, pasajeros, 'Pasajeros obtenidos exitosamente');
+    } catch (error) {
+      next(error);
+    }
+  },
 
-router.get('/', pasajerosController.getAll);
-router.get('/:id', pasajerosController.getById);
+  async getById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const pasajero = await service.getById(id);
+      successResponse(res, pasajero, 'Pasajero obtenido exitosamente');
+    } catch (error) {
+      next(error);
+    }
+  },
 
-router.post(
-  '/',
-  adminMiddleware,
-  validateSchema(createPasajeroSchema),
-  pasajerosController.create
-);
+  async create(req, res, next) {
+    try {
+      const pasajero = await service.create(req.validatedData);
+      successResponse(res, pasajero, 'Pasajero creado exitosamente', 201);
+    } catch (error) {
+      next(error);
+    }
+  },
 
-router.put(
-  '/:id',
-  adminMiddleware,
-  validateSchema(updatePasajeroSchema),
-  pasajerosController.update
-);
+  async update(req, res, next) {
+    try {
+      const { id } = req.params;
+      const pasajero = await service.update(id, req.validatedData);
+      successResponse(res, pasajero, 'Pasajero actualizado exitosamente');
+    } catch (error) {
+      next(error);
+    }
+  },
 
-router.delete(
-  '/:id',
-  adminMiddleware,
-  pasajerosController.delete
-);
-
-export default router;
+  async delete(req, res, next) {
+    try {
+      const { id } = req.params;
+      await service.delete(id);
+      successResponse(res, null, 'Pasajero eliminado exitosamente');
+    } catch (error) {
+      next(error);
+    }
+  }
+};

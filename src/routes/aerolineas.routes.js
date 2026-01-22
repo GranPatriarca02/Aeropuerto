@@ -3,7 +3,7 @@ import { aerolineasController } from '../controllers/aerolineas.controller.js';
 import { apiKeyMiddleware } from '../middlewares/apiKey.middleware.js';
 import { adminMiddleware } from '../middlewares/admin.middleware.js';
 import { validateSchema } from '../middlewares/validation.middleware.js';
-import { createAerolineaSchema, updateAerolineaSchema } from '../validations/aerolinea.validation.js';
+import { validateCreateAerolinea } from '../validations/aerolinea.validation.js';
 
 const router = Router();
 
@@ -15,14 +15,14 @@ router.get('/:id', aerolineasController.getById);
 router.post(
   '/',
   adminMiddleware,
-  validateSchema(createAerolineaSchema),
+  validateSchema(validateCreateAerolinea), // Usamos la misma función
   aerolineasController.create
 );
 
 router.put(
   '/:id',
   adminMiddleware,
-  validateSchema(updateAerolineaSchema),
+  validateSchema(validateCreateAerolinea), // El middleware ahora es compatible
   aerolineasController.update
 );
 

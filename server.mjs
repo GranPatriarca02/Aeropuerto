@@ -1,28 +1,13 @@
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import routes from './routes/index.js';
-import { errorHandler, notFoundHandler } from './middlewares/error.middleware.js';
+import app from './src/app.js';
+import { config } from './src/config/index.js';
 
-const app = express();
+const PORT = config.port;
 
-// Middlewares globales
-app.use(helmet()); // Seguridad HTTP
-app.use(cors()); // CORS
-app.use(express.json()); // Parse JSON
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
-
-// Logger simple
-app.use((req, res, next) => {
-  console.log(${new Date().toISOString()} - ${req.method} ${req.path});
-  next();
+app.listen(PORT, () => {
+  console.log('='.repeat(50));
+  console.log('Servidor iniciado correctamente');
+  console.log(`Puerto: ${PORT}`);
+  console.log(`Entorno: ${config.nodeEnv}`);
+  console.log(`URL: http://localhost:${PORT}/api`);
+  console.log('='.repeat(50));
 });
-
-// Rutas
-app.use('/api', routes);
-
-// Manejo de errores
-app.use(notFoundHandler);
-app.use(errorHandler);
-
-export default app;
