@@ -6,5 +6,5 @@ if (!config.supabase.url || !config.supabase.key) {
     throw new Error('Faltan las credenciales de Supabase en el config.js');
 }
 
-[cite_start]// Creamos el cliente de Supabase una sola vez para reutilizarlo [cite: 16]
+// Creamos el cliente de Supabase una sola vez para reutilizarlo
 export const supabase = createClient(config.supabase.url, config.supabase.key);
