@@ -1,35 +1,35 @@
 import { Router } from 'express';
-import { aerolineasController } from '../controllers/aerolineas.controller.js';
+import { aeropuertosController } from '../controllers/aeropuertos.controller.js';
 import { apiKeyMiddleware } from '../middlewares/apiKey.middleware.js';
 import { adminMiddleware } from '../middlewares/admin.middleware.js';
 import { validateSchema } from '../middlewares/validation.middleware.js';
-import { validateCreateAerolinea } from '../validations/aerolinea.validation.js';
+import { validateAeropuerto } from '../validations/aeropuerto.validation.js';
 
 const router = Router();
 
 router.use(apiKeyMiddleware);
 
-router.get('/', aerolineasController.getAll);
-router.get('/:id', aerolineasController.getById);
+router.get('/', aeropuertosController.getAll);
+router.get('/:id', aeropuertosController.getById);
 
 router.post(
   '/',
   adminMiddleware,
-  validateSchema(validateCreateAerolinea), // Usamos la misma función
-  aerolineasController.create
+  validateSchema(validateAeropuerto), // Usamos la misma función
+  aeropuertosController.create
 );
 
 router.put(
   '/:id',
   adminMiddleware,
-  validateSchema(validateCreateAerolinea), // El middleware ahora es compatible
-  aerolineasController.update
+  validateSchema(validateAeropuerto), // El middleware ahora es compatible
+  aeropuertosController.update
 );
 
 router.delete(
   '/:id',
   adminMiddleware,
-  aerolineasController.delete
+  aeropuertosController.delete
 );
 
 export default router;
