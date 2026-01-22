@@ -1,198 +1,218 @@
- Estructura del Proyecto
+ LISTADO COMPLETO DE ENDPOINTS GET
+ HEALTH CHECK (sin API Key)
+GET http://localhost:3000/api/health
 
-Proyecto: API REST – Sistema de Gestión de Aeropuerto
 
-airport-api/
-│
-├── src/
-│   ├── app.js
-│   ├── server.js
-│
-│   ├── config/
-│   │   ├── supabase.js
-│   │   ├── redis.js
-│   │   └── index.js
-│
-│   ├── routes/
-│   │   ├── aeropuertos.routes.js
-│   │   ├── aerolineas.routes.js
-│   │   ├── vuelos.routes.js
-│   │   ├── pilotos.routes.js
-│   │   ├── pasajeros.routes.js
-│   │   └── index.js
-│
-│   ├── controllers/
-│   │   ├── aeropuertos.controller.js
-│   │   ├── aerolineas.controller.js
-│   │   ├── vuelos.controller.js
-│   │   ├── pilotos.controller.js
-│   │   ├── pasajeros.controller.js
-│   │   └── estadisticas.controller.js
-│
-│   ├── services/
-│   │   ├── aeropuertos.service.js
-│   │   ├── aerolineas.service.js
-│   │   ├── vuelos.service.js
-│   │   ├── pilotos.service.js
-│   │   ├── pasajeros.service.js
-│   │   └── estadisticas.service.js
-│
-│   ├── repositories/
-│   │   ├── aeropuertos.repository.js
-│   │   ├── aerolineas.repository.js
-│   │   ├── vuelos.repository.js
-│   │   ├── pilotos.repository.js
-│   │   ├── pasajeros.repository.js
-│   │   ├── vuelosPilotos.repository.js
-│   │   └── vuelosPasajeros.repository.js
-│
-│   ├── models/
-│   │   ├── Aeropuerto.js
-│   │   ├── Aerolinea.js
-│   │   ├── Vuelo.js
-│   │   ├── Piloto.js
-│   │   └── Pasajero.js
-│
-│   ├── middlewares/
-│   │   ├── apiKey.middleware.js
-│   │   ├── admin.middleware.js
-│   │   ├── validation.middleware.js
-│   │   └── error.middleware.js
-│
-│   ├── validations/
-│   │   ├── aeropuerto.validation.js
-│   │   ├── aerolinea.validation.js
-│   │   ├── vuelo.validation.js
-│   │   ├── piloto.validation.js
-│   │   └── pasajero.validation.js
-│
-│   ├── utils/
-│   │   ├── response.js
-│   │   └── errors.js
-│
-│   └── database/
-│       ├── schema.sql
-│       └── seed.sql
-│
-├── .env.example
-├── .gitignore
-├── package.json
-├── README.md
-└── aad-psp_grupo_X.pdf
+ AEROPUERTOS
+GET http://localhost:3000/api/aeropuertos
 
-.............. Explicación por capas..................
-🔹 routes/
+GET http://localhost:3000/api/aeropuertos/1
 
-Define endpoints
+(Cambia el 1 por cualquier ID)
 
-NO lógica de negocio
+ AEROLÍNEAS
+GET http://localhost:3000/api/aerolineas
 
-Aplica middlewares
+GET http://localhost:3000/api/aerolineas/1
 
-Ejemplo:
 
-router.get(
-  '/api/vuelos',
-  apiKeyMiddleware,
-  vuelosController.getAll
-);
+👨‍✈️ PILOTOS
+GET http://localhost:3000/api/pilotos
 
-🔹 controllers/
+GET http://localhost:3000/api/pilotos/1
 
-Recibe req y res
+GET http://localhost:3000/api/pilotos/top
 
-Valida entrada
+(Top 10 pilotos por horas de vuelo)
+GET http://localhost:3000/api/pilotos/top?limit=5
 
-Llama al service
+(Top 5 pilotos - puedes cambiar el número)
+GET http://localhost:3000/api/pilotos/aerolinea/1
 
-Devuelve respuesta JSON estándar
+(Pilotos de la aerolínea con ID 1)
 
- No accede a la BD
- No lógica compleja
+🛩️ VUELOS
+GET http://localhost:3000/api/vuelos
 
-🔹 services/
+GET http://localhost:3000/api/vuelos/1
 
-Lógica de negocio
+GET http://localhost:3000/api/vuelos/aeropuerto/1
 
-Orquesta repositorios
+(Vuelos desde/hacia el aeropuerto con ID 1)
+GET http://localhost:3000/api/vuelos/estado/programado
 
-Implementa consultas avanzadas
+(Estados: programado, en_vuelo, cancelado, finalizado)
+GET http://localhost:3000/api/vuelos/estado/en_vuelo
 
-Maneja caché con Redis
+GET http://localhost:3000/api/vuelos/estado/cancelado
 
-Ejemplo:
+GET http://localhost:3000/api/vuelos/estado/finalizado
 
-vuelos por aeropuerto
+GET http://localhost:3000/api/vuelos/1/pilotos
 
-top aerolíneas
+(Pilotos asignados al vuelo 1)
+GET http://localhost:3000/api/vuelos/1/pasajeros
 
-pilotos con más horas
+(Pasajeros del vuelo 1)
 
-🔹 repositories/
+ PASAJEROS
+GET http://localhost:3000/api/pasajeros
 
-CRUD puro
+GET http://localhost:3000/api/pasajeros/1
 
-Acceso a Supabase
 
-Una tabla → un repositorio
+ ESTADÍSTICAS
+GET http://localhost:3000/api/estadisticas
 
-Ejemplo:
+(Estadísticas generales: totales de todo)
+GET http://localhost:3000/api/estadisticas/top-aerolineas
 
-findAll()
-findById(id)
-create(data)
-update(id, data)
-delete(id)
+(Top 5 aerolíneas por número de vuelos)
+GET http://localhost:3000/api/estadisticas/top-aerolineas?limit=10
 
-🔹 models/
+(Top 10 aerolíneas - puedes cambiar el número)
+GET http://localhost:3000/api/estadisticas/top-pilotos
 
- Obligatorio por enunciado
+(Top 10 pilotos por horas de vuelo)
+GET http://localhost:3000/api/estadisticas/top-pilotos?limit=5
 
-Ejemplo Piloto.js:
+GET http://localhost:3000/api/estadisticas/aeropuerto-mas-activo
 
-export class Piloto {
-  constructor(data) {
-    this.id = data.id;
-    this.nombre = data.nombre;
-    this.licencia = data.licencia;
-    this.horas_vuelo = data.horas_vuelo;
-    this.id_aerolinea = data.id_aerolinea;
-    this.created_at = data.created_at;
-  }
 
-  toJSON() {
-    return { ...this };
-  }
 
-  toPublic() {
-    return {
-      id: this.id,
-      nombre: this.nombre,
-      horas_vuelo: this.horas_vuelo
-    };
-  }
+
+
+ POST (Crear recursos)
+ AEROPUERTOS
+POST http://localhost:3000/api/aeropuertos
+
+Body (JSON):
+{
+  "nombre": "Aeropuerto de Sevilla",
+  "codigo_iata": "SVQ",
+  "ciudad": "Sevilla",
+  "pais": "España"
+}
+ AEROLÍNEAS
+POST http://localhost:3000/api/aerolineas
+
+Body (JSON):
+{
+  "nombre": "Air Madrid",
+  "codigo": "AM",
+  "activa": true
+}
+ PILOTOS
+POST http://localhost:3000/api/pilotos
+
+Body (JSON):
+{
+  "nombre": "Miguel Hernández",
+  "licencia": "ATP-021-ESP",
+  "horas_vuelo": 2500,
+  "id_aerolinea": 1
+}
+ VUELOS
+POST http://localhost:3000/api/vuelos
+
+Body (JSON):
+{
+  "numero_vuelo": "IB8888",
+  "fecha_salida": "2025-03-01T10:00:00",
+  "fecha_llegada": "2025-03-01T14:00:00",
+  "estado": "programado",
+  "id_aeropuerto_origen": 1,
+  "id_aeropuerto_destino": 3
+}
+ PASAJEROS
+POST http://localhost:3000/api/pasajeros
+
+Body (JSON):
+{
+  "nombre": "Laura Martínez",
+  "documento": "DNI99887766M",
+  "nacionalidad": "España"
+}
+ ASIGNAR PILOTO A VUELO
+POST http://localhost:3000/api/vuelos/1/pilotos
+
+Body (JSON):
+{
+  "id_piloto": 5,
+  "rol": "capitan"
+}
+(rol puede ser: "capitan" o "copiloto")
+ ASIGNAR PASAJERO A VUELO
+POST http://localhost:3000/api/vuelos/1/pasajeros
+
+Body (JSON):
+{
+  "id_pasajero": 10,
+  "asiento": "15A"
 }
 
-🔹 validations/
+ PUT (Actualizar recursos)
+ AEROPUERTOS
+PUT http://localhost:3000/api/aeropuertos/1
 
-Validaciones de entrada
+Body (JSON):
+{
+  "nombre": "Aeropuerto Adolfo Suárez Madrid-Barajas",
+  "ciudad": "Madrid"
+}
+(Solo incluye los campos que quieres actualizar)
+ AEROLÍNEAS
+PUT http://localhost:3000/api/aerolineas/1
 
-Tipos, rangos, formatos
+Body (JSON):
+{
+  "activa": false
+}
+ PILOTOS
+PUT http://localhost:3000/api/pilotos/1
 
-Errores 400 Bad Request
+Body (JSON):
+{
+  "horas_vuelo": 5500,
+  "id_aerolinea": 2
+}
+ VUELOS
+PUT http://localhost:3000/api/vuelos/1
 
-🔹 middlewares/
+Body (JSON):
+{
+  "estado": "en_vuelo"
+}
+(Estados válidos: "programado", "en_vuelo", "cancelado", "finalizado")
+PUT http://localhost:3000/api/vuelos/2
 
-API Key
+Body (JSON):
+{
+  "estado": "cancelado",
+  "fecha_salida": "2025-03-05T10:00:00"
+}
+ PASAJEROS
+PUT http://localhost:3000/api/pasajeros/1
 
-Roles (admin)
+Body (JSON):
+{
+  "nombre": "José González García",
+  "nacionalidad": "España"
+}
 
-Manejo de errores
+DELETE (Eliminar recursos)
+ AEROPUERTOS
+DELETE http://localhost:3000/api/aeropuertos/11
 
-Validación centralizada
+(No necesita Body)
+ AEROLÍNEAS
+DELETE http://localhost:3000/api/aerolineas/11
 
-🔹 database/
+ PILOTOS
+DELETE http://localhost:3000/api/pilotos/21
 
-schema.sql → creación de tablas
+ VUELOS
+DELETE http://localhost:3000/api/vuelos/13
 
-seed.sql → datos de prueba
+ PASAJEROS
+DELETE http://localhost:3000/api/pasajeros/21
