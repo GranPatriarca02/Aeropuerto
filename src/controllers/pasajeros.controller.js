@@ -1,9 +1,16 @@
+// Importamos el servicio
 import { PasajerosService } from '../services/pasajeros.service.js';
+
+// Importamos la función de respuesta
 import { successResponse } from '../utils/response.js';
 
+// Creamos instancia del servicio
 const service = new PasajerosService();
 
+// Exportamos el controlador
 export const pasajerosController = {
+  
+  // GET ALL - Obtener todos los pasajeros
   async getAll(req, res, next) {
     try {
       const pasajeros = await service.getAll();
@@ -13,6 +20,7 @@ export const pasajerosController = {
     }
   },
 
+  // GET BY ID - Obtener un pasajero específico
   async getById(req, res, next) {
     try {
       const { id } = req.params;
@@ -23,6 +31,7 @@ export const pasajerosController = {
     }
   },
 
+  // CREATE - Crear nuevo pasajero (ADMIN)
   async create(req, res, next) {
     try {
       const pasajero = await service.create(req.body);
@@ -32,6 +41,7 @@ export const pasajerosController = {
     }
   },
 
+  // UPDATE - Actualizar pasajero (ADMIN)
   async update(req, res, next) {
     try {
       const { id } = req.params;
@@ -42,6 +52,7 @@ export const pasajerosController = {
     }
   },
 
+  // DELETE - Eliminar pasajero (ADMIN)
   async delete(req, res, next) {
     try {
       const { id } = req.params;
